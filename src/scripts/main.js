@@ -1,20 +1,108 @@
 function main() {
 
+    const baseUrl = 'https://web-server-book-dicoding.appspot.com';
+
     const getBook = () => {
         // tuliskan kode di sini!
+        const xhr = new XMLHttpRequest();
+
+        //callback success || error
+        xhr.onload = function() {
+            const responseJson = JSON.parse(this.responseText);
+            if (responseJson.error) {
+                showResponseMessage(responseJson.message);
+            } else {
+                renderAllBooks(responseJson.books);
+            }
+        }
+
+        xhr.onerror = function() {
+            showResponseMessage();
+        }
+
+        //GET request
+        xhr.open('GET', `${baseUrl}/list`);
+
+        //send request
+        xhr.send();
     };
 
 
     const insertBook = (book) => {
         // tuliskan kode di sini!
+        const xhr = new XMLHttpRequest();
+
+        //success || error
+        xhr.onload = function(){
+            const responseJson = JSON.parse(this.responseText);
+            showResponseMessage(responseJson.message);
+            getBook();
+        }
+
+        xhr.onerror = function(){
+            showResponseMessage(responseJson.message);
+        }
+
+        //POST request
+        xhr.open('POST', `${baseUrl}/add`);
+
+        //request header
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.setRequestHeader('X-Auth-Token', '12345');
+
+        //send request + JSON.stringify(book)
+        xhr.send(JSON.stringify(book));
     };
 
     const updateBook = (book) => {
         // tuliskan kode di sini!
+        const xhr = new XMLHttpRequest();
+
+        //success || error
+        xhr.onload = function(){
+            const responseJson = JSON.parse(this.responseText);
+            showResponseMessage(responseJson.message);
+            getBook();
+        }
+
+        xhr.onerror = function(){
+            showResponseMessage();
+        }
+
+        //PUT request
+        xhr.open('PUT', `${baseUrl}/edit/${book.id}`);
+
+        //header request
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.setRequestHeader('X-Auth-Token', '12345')
+
+        //send request
+        xhr.send(JSON.stringify(book));
     };
 
     const removeBook = (bookId) => {
         // tuliskan kode di sini!
+        const xhr = new XMLHttpRequest();
+
+        //success || error
+        xhr.onload = function(){
+            const responseJson = JSON.parse(this.responseText);
+            showResponseMessage(responseJson.message);
+            getBook();
+        }
+
+        xhr.onerror = function(){
+            showResponseMessage();
+        }
+
+        //DELETE request
+        xhr.open('DELETE', `${baseUrl}/delete/${bookId}`);
+
+        //header request
+        xhr.setRequestHeader('X-Auth-Token', '12345');
+
+        //send request
+        xhr.send();
     };
 
 
